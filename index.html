@@ -193,21 +193,18 @@
 
 /* IMPORTANT: keep these so images have size + can stack */
 .slide{
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-
-  object-fit: contain;     /* ✅ shows whole image */
-  object-position: center; /* optional */
-  background: #000;
-
-  display: none;           /* hide all by default */
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;      /* use cover instead of contain */
+  display:none;
 }
 
 .slide.active{
-  display: block;          /* show the active one */
+  display:block;
 }
+
 
 
 
