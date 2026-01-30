@@ -1,0 +1,1092 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Paris's Sweet Spot</title>
+
+  <!-- Fonts (closest to your screenshot vibe) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Patrick+Hand&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --black:#0b0b0b;
+      --pink:#ff3b86;   /* headline pink */
+      --berry:#a61f55;  /* CTA band */
+      --text:#111;
+      --muted:#666;
+      --max:1100px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text);
+      background:#fff;
+    }
+    a{color:inherit; text-decoration:none}
+
+    /* ---------- “ONE FILE, TWO PAGES” TOGGLE ---------- */
+    .page{display:none}
+    .page.active{display:block}
+
+    /* ---------- HEADER (matches screenshot) ---------- */
+    .header{
+      position:sticky; top:0; z-index:10;
+      background:var(--black);
+      color:#fff;
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    .header-inner{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:18px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+    }
+    .brandline{
+      font-weight:800;
+      font-size:clamp(18px, 2.2vw, 34px);
+      letter-spacing:.2px;
+      white-space:nowrap;
+    }
+
+    .nav{
+      display:flex;
+      gap:26px;
+      font-size:16px;
+      opacity:.95;
+    }
+    .nav a{padding:6px 0}
+    .nav a:hover{opacity:.8}
+
+    .menu-btn{
+      display:none;
+      background:transparent;
+      border:1px solid rgba(255,255,255,.25);
+      color:#fff;
+      padding:10px 12px;
+      border-radius:10px;
+      font-size:14px;
+    }
+
+    .mobile-nav{
+      display:none;
+      padding:0 18px 16px 18px;
+      max-width:var(--max);
+      margin:0 auto;
+    }
+    .mobile-nav a{
+      display:block;
+      padding:12px 10px;
+      border-radius:10px;
+      background:rgba(255,255,255,.06);
+      margin-top:10px;
+    }
+
+    /* ---------- SECTIONS ---------- */
+    .section{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:64px 18px;
+    }
+
+    /* HERO (matches screenshot) */
+    .hero{
+      text-align:center;
+      padding-top:56px;
+      padding-bottom:56px;
+    }
+    .hero h1{
+      margin:0 0 14px 0;
+      color:var(--pink);
+      font-family: "Baloo 2", system-ui, sans-serif;
+      font-size:clamp(42px, 6.2vw, 82px);
+      line-height:1.02;
+      font-weight:800;
+      letter-spacing:-.5px;
+    }
+    .hero p{
+      margin:0;
+      font-family:"Patrick Hand", system-ui, sans-serif;
+      font-size:clamp(22px, 2.6vw, 34px);
+      letter-spacing:2px;
+      color:#111;
+    }
+
+    /* CTA Band */
+    .band{
+      background:var(--berry);
+      padding:34px 18px;
+    }
+    .band-inner{
+      max-width:var(--max);
+      margin:0 auto;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    }
+    .cta{
+      display:inline-block;
+      width:min(520px, 100%);
+      text-align:center;
+      padding:16px 18px;
+      border:2px solid rgba(255,255,255,.65);
+      border-radius:12px;
+      color:#fff;
+      font-size:18px;
+      font-weight:700;
+    }
+    .cta:hover{background:rgba(255,255,255,.08)}
+
+    /* Divider title (Fall flavors loading...) */
+    .divider-title{
+      text-align:center;
+      padding:54px 18px 30px 18px;
+      color:var(--pink);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size:clamp(22px, 3vw, 40px);
+      letter-spacing:2px;
+    }
+
+    /* Featured item card (blue outline) */
+    .featured{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:0 18px 70px 18px;
+    }
+    .card{
+      border:3px solid #1f7aff; /* blue outline like mock */
+      border-radius:8px;
+      overflow:hidden;
+      background:#fff;
+    }
+   .card > img{width:100%; display:block; height:auto;}
+    .caption{
+      text-align:center;
+      padding:14px 12px;
+      color:#333;
+      font-size:14px;
+      border-top:1px solid rgba(0,0,0,.08);
+    }
+/* ---------- SLIDESHOW ---------- */
+.card.slider{
+  position: relative;
+  width: 100%;
+  aspect-ratio: 21 / 9;   /* or 16/9 if you want less “wide” */
+  background: #000;
+  overflow: hidden;
+}
+
+.slides{
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* IMPORTANT: keep these so images have size + can stack */
+.slide{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;     /* ✅ shows whole image */
+  object-position: center; /* optional */
+  background: #000;
+
+  display: none;           /* hide all by default */
+}
+
+.slide.active{
+  display: block;          /* show the active one */
+}
+
+
+
+.slider-btn{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  border:none;
+  background:rgba(0,0,0,.45);
+  color:#fff;
+  width:44px;
+  height:44px;
+  border-radius:999px;
+  font-size:28px;
+  line-height:44px;
+  cursor:pointer;
+}
+.slider-btn:hover{ background:rgba(0,0,0,.6); }
+.slider-btn.prev{ left:14px; }
+.slider-btn.next{ right:14px; }
+
+.dots{
+  position:absolute;
+  bottom:52px;
+  left:0; right:0;
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  padding:0 10px;
+}
+.dot{
+  width:10px;
+  height:10px;
+  border-radius:999px;
+  background:rgba(255,255,255,.55);
+  border:1px solid rgba(0,0,0,.2);
+  cursor:pointer;
+}
+.dot.active{ background:#fff; }
+
+
+    /* About / Chef section (big pink text from screenshot) */
+    .about{text-align:center; padding-top:30px; padding-bottom:30px;}
+    .about h2{
+      color:var(--pink);
+      font-size:clamp(22px, 3.2vw, 40px);
+      font-weight:800;
+      margin:0 auto;
+      max-width:900px;
+      line-height:1.25;
+      font-family: Georgia, "Times New Roman", serif;
+    }
+    .about p{
+      max-width:780px;
+      margin:18px auto 0 auto;
+      color:var(--muted);
+      font-size:16px;
+      line-height:1.7;
+    }
+
+    /* Press coverage band */
+    .press-wrap{
+      background:var(--berry);
+      color:#fff;
+      padding:60px 18px;
+    }
+    .press-inner{max-width:var(--max); margin:0 auto;}
+    .press-inner h3{
+      text-align:center;
+      font-size:clamp(26px, 3vw, 40px);
+      margin:0 0 40px 0;
+      font-weight:700;
+      font-family: Georgia, "Times New Roman", serif;
+    }
+    .press-grid{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap:26px;
+      align-items:start;
+    }
+    .quote{text-align:center; padding:18px 10px;}
+    .quote p{margin:0 0 16px 0; font-style:italic; line-height:1.6; font-size:16px;}
+    .quote a{opacity:.9; text-decoration:underline; font-size:15px;}
+
+    /* Footer */
+    footer{
+      padding:50px 18px;
+      text-align:center;
+      color:#777;
+      font-size:14px;
+    }
+
+/* NEW: footer styling (paste this right here) */
+.site-footer{
+  background: var(--berry);   /* 👈 pink background */
+  padding:22px 18px;
+  text-align:center;
+  color:#fff;                 /* 👈 white text for contrast */
+  font-size:14px;
+}
+
+.site-footer .footer-inner{
+  max-width:var(--max);
+  margin:0 auto;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.site-footer .footer-contact a{
+  color:#fff;
+  text-decoration:underline;
+}
+/* 👇 ADD THIS RIGHT HERE */
+.site-footer .footer-copy{
+  opacity:0.85;
+  font-size:13px;
+}
+
+
+.site-footer .footer-contact,
+.site-footer .footer-copy{
+  margin:0;
+}
+
+/* ---------- CHEF PAGE ---------- */
+.chef-layout{
+  display:grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap:40px;
+  align-items:center;
+}
+
+.chef-photo{
+  width:100%;
+  border-radius:14px;
+  object-fit:cover;
+}
+
+.chef-name{
+  margin:0 0 14px 0;
+  color:var(--pink);
+  font-family:"Baloo 2", system-ui, sans-serif;
+  font-size:clamp(28px, 4vw, 44px);
+}
+
+.chef-bio p{
+  color:var(--muted);
+  line-height:1.7;
+  margin:0 0 14px 0;
+  font-size:16px;
+}
+
+    /* ---------- ORDER “PAGE” FORM STYLES ---------- */
+    .order-wrap{
+      max-width:900px;
+      margin:0 auto;
+      padding:46px 18px 70px;
+    }
+    .order-title{
+      margin:0 0 10px 0;
+      color:var(--pink);
+      text-align:center;
+      font-family:"Baloo 2", system-ui, sans-serif;
+      font-size:clamp(28px, 4vw, 54px);
+      font-weight:800;
+    }
+    .order-sub{
+      margin:0 auto 34px auto;
+      text-align:center;
+      color:var(--muted);
+      max-width:760px;
+      line-height:1.6;
+      font-size:16px;
+    }
+
+    .backlink{
+      display:inline-block;
+      margin-bottom:18px;
+      border:1px solid rgba(0,0,0,.14);
+      padding:10px 12px;
+      border-radius:10px;
+      color:#333;
+      font-size:14px;
+    }
+
+    form{max-width:760px; margin:0 auto;}
+
+    label{display:block; font-weight:700; margin:0 0 8px 0;}
+    input, select, textarea{
+      width:100%;
+      padding:12px;
+      border-radius:10px;
+      border:1px solid #cfcfcf;
+      font-size:16px;
+      margin:0 0 20px 0;
+    }
+    textarea{min-height:120px}
+
+    .radio-group, .checkbox-group{margin:0 0 20px 0}
+    .radio-group label, .checkbox-group label{
+      display:flex; align-items:center; gap:10px;
+      font-weight:500; margin:0 0 10px 0;
+    }
+    .radio-group input, .checkbox-group input{width:auto; margin:0;}
+
+    .note{
+      background:#f9f1f4;
+      border-left:4px solid var(--berry);
+      padding:14px;
+      border-radius:10px;
+      color:#444;
+      margin:8px 0 18px 0;
+      line-height:1.5;
+      font-size:14px;
+    }
+
+    .submit-btn{
+      width:100%;
+      padding:16px;
+      background:var(--berry);
+      color:#fff;
+      border:none;
+      border-radius:12px;
+      font-size:18px;
+      font-weight:800;
+      cursor:pointer;
+    }
+    .submit-btn:hover{opacity:.92}
+
+/* ---------- MENU PAGE ---------- */
+
+.menu-title{
+  text-align:center;
+  color:var(--pink);
+  font-family:"Baloo 2", system-ui, sans-serif;
+  font-size:clamp(36px, 5vw, 56px);
+  margin:10px 0 10px 0;
+}
+
+.menu-intro{
+  text-align:center;
+  max-width:720px;
+  margin:0 auto 50px auto;
+  font-size:16px;
+  color:var(--muted);
+  line-height:1.6;
+}
+
+/* Menu sections */
+.menu-section{
+  margin-bottom:60px;
+}
+
+.menu-section h2{
+  text-align:center;
+  color:var(--berry);
+  font-size:clamp(22px, 3vw, 30px);
+  margin-bottom:26px;
+  font-family:"Baloo 2", system-ui, sans-serif;
+}
+
+/* Menu grid */
+.menu-grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap:26px;
+}
+
+/* Menu card */
+.menu-item{
+  border:2px solid rgba(0,0,0,.08);
+  border-radius:16px;
+  padding:22px 18px;
+  text-align:center;
+  transition:transform .25s ease, box-shadow .25s ease;
+  background:#fff;
+}
+
+.menu-item:hover{
+  transform:translateY(-6px);
+  box-shadow:0 18px 40px rgba(0,0,0,.12);
+}
+
+.menu-item h3{
+  margin:0 0 10px 0;
+  font-size:18px;
+  color:#111;
+}
+
+.menu-item p{
+  margin:0;
+  font-size:14px;
+  color:var(--muted);
+}
+
+/* Price */
+.menu-price{
+  display:inline-block;
+  margin-top:12px;
+  font-weight:700;
+  color:var(--pink);
+  font-size:15px;
+}
+
+
+    /* ---------- RESPONSIVE ---------- */
+ /* ---------- RESPONSIVE ---------- */
+@media (max-width: 900px){
+  .press-grid{
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Chef page layout stacks */
+  .chef-layout{
+    grid-template-columns: 1fr;
+    gap:28px;
+  }
+}
+
+@media (max-width: 640px){
+  .nav{
+    display:none;
+  }
+
+  .menu-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+  }
+
+  .section{
+    padding:46px 18px;
+  }
+
+  .hero{
+    padding-top:42px;
+    padding-bottom:42px;
+  }
+
+  .press-grid{
+    grid-template-columns: 1fr;
+  }
+
+  /* Chef page spacing */
+  .chef-name{
+    text-align:center;
+  }
+
+  .chef-bio p{
+    font-size:15px;
+  }
+}
+  </style>
+</head>
+
+<body>
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="brandline">Satisfy your sweet tooth!</div>
+
+      <nav class="nav" aria-label="Primary navigation">
+        <!-- These links always route through Home view first -->
+        <a href="#home" data-home="true" data-scroll="#homeTop">Home</a>
+        <a href="#chef" data-chef="true">Chef</a>
+        <a href="#menu" data-menu="true">Menu</a>
+	<a href="#order" data-order="true">Place Your Order</a>
+      </nav>
+
+      <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="mobileNav">☰ Menu</button>
+    </div>
+
+    <div class="mobile-nav" id="mobileNav">
+      <a href="#home" data-home="true" data-scroll="#homeTop">Home</a>
+      <a href="#menu" data-menu="true">Menu</a>
+     <a href="#chef" data-chef="true">Chef</a>
+      <a href="#order" data-order="true">Place Your Order</a>
+    </div>
+  </header>
+
+  <!-- ================= HOME VIEW (YOUR SCREENSHOT DESIGN) ================= -->
+  <main id="homePage" class="page active">
+    <div id="homeTop"></div>
+
+    <section class="section hero">
+      <h1>Paris's Sweet Spot</h1>
+      <p>hits the spot every time!</p>
+    </section>
+
+    <section class="band">
+      <div class="band-inner">
+        <!-- Goes to the “Order page” view (still same file) -->
+        <a class="cta" href="#order" id="orderCta">Place Your Order</a>
+      </div>
+    </section>
+
+    <div class="divider-title">Baked with love, served fresh</div>
+
+<section class="featured">
+  <div class="card slider" aria-label="Featured photos slideshow">
+    
+    <div class="slides" id="slides">
+      <img class="slide active" src="./images/chef.jpg" alt="Paris baking in the kitchen">
+      <img class="slide" src="./images/biscoff-cupcakes.jpg" alt="Biscoff cupcakes">
+      <img class="slide" src="./images/vanilla-cupcakes.jpg" alt="Vanilla cupcakes">
+      <img class="slide" src="./images/strawberry-cupcakes.jpg" alt="Strawberry cupcakes">
+      <img class="slide" src="./images/cookie-monster.jpg" alt="Cookie Monster cookies">
+      <img class="slide" src="./images/biscoff-bundt.jpg" alt="Biscoff bundt cake">
+      <img class="slide" src="./images/red-velvet-cookies.jpg" alt="Red velvet cookies">
+    </div>
+
+    <button class="slider-btn prev" type="button" aria-label="Previous photo">‹</button>
+    <button class="slider-btn next" type="button" aria-label="Next photo">›</button>
+
+    <div class="dots" id="dots" aria-label="Slideshow navigation"></div>
+
+    <div class="caption" id="slideCaption">Biscoff Cookie Butter cupcakes (available as mini Bundts)</div>
+  </div>
+</section>
+
+    <section class="section about" id="chef">
+      <h2>Fresh-baked sweets made with love — for everyday cravings and big celebrations.</h2>
+      <p>
+        From custom cupcakes to seasonal favorites, Paris’s Sweet Spot is your go-to for desserts that look amazing and taste even better.
+        Drop by, place a pickup order, or let us sweeten up your next event.
+      </p>
+    </section>
+
+    <footer class="site-footer">
+  <div class="footer-inner">
+    <p class="footer-contact">
+      📧 <a href="mailto:sweetspotbyparis@gmail.com">sweetspotbyparis@gmail.com</a>
+    </p>
+
+    <p class="footer-copy">
+      © <span id="year"></span> Paris’s Sweet Spot • Made fresh, served with love.
+    </p>
+  </div>
+</footer>
+
+  </main>
+
+  <!-- ================= ORDER VIEW (SEPARATE “PAGE FEEL” IN SAME FILE) ================= -->
+  <main id="orderPage" class="page">
+    <div class="order-wrap">
+      <a class="backlink" href="#home">← Back to Home</a>
+
+      <h1 class="order-title">Place Your Order</h1>
+      <p class="order-sub">
+        Complete the form below to request your order. We’ll follow up to confirm availability and payment 🍰
+      </p>
+
+      <form id="orderForm">
+        <label>Are you a new or existing customer?</label>
+        <div class="radio-group">
+          <label><input type="radio" name="customerType" value="New customer" required> I am a new customer</label>
+          <label><input type="radio" name="customerType" value="Existing customer"> I am an existing customer</label>
+        </div>
+
+        <label>Name</label>
+        <input type="text" name="fullName" required>
+
+        <label>Email</label>
+        <input type="email" name="email" required>
+
+        <label>Phone Number (optional, but preferred for easier contact)</label>
+        <input type="tel" name="phone">
+
+        <label>What are you ordering?</label>
+        <select name="orderItem" required>
+          <option value="">Select an option</option>
+          <option>1/2 dozen Red Velvet Oreo cookie</option>
+          <option>1/2 dozen Cookie Monster cookie</option>
+          <option>1/2 dozen Key Lime cookie</option>
+          <option>1/2 dozen Mini Bundt Cake</option>
+          <option>1/2 dozen cupcakes</option>
+          <option>Dozen Red Velvet Oreo cookie</option>
+          <option>Dozen Cookie Monster cookie</option>
+          <option>Dozen Key Lime cookie</option>
+          <option>Dozen Mini Bundt</option>
+          <option>Dozen Cupcakes</option>
+          <option>Other</option>
+        </select>
+
+        <label>Quantity (how many of each product you selected?)</label>
+        <input type="text" name="quantityDetails" placeholder="Example: 2 x 1/2 dozen cupcakes, 1 x dozen Cookie Monster" required>
+
+        <label>Pickup or Delivery?</label>
+        <div class="radio-group">
+          <label><input type="radio" name="fulfillment" value="Pickup (free)" required> Pickup (free)</label>
+<label><input type="radio" name="fulfillment" value="Delivery (fee is applied)"> Delivery (fee is applied)</label>
+<label><input type="radio" name="fulfillment" value="Other"> Other</label>
+        </div>
+
+        <label>Preferred Date/Time</label>
+        <input type="datetime-local" name="preferredDateTime">
+
+        <label>Notes or Custom Requests?</label>
+        <textarea name="notes" placeholder="Flavors, colors, allergies, special instructions, address if delivery, etc."></textarea>
+
+        <div class="note">
+          Once your order is confirmed, I’ll send payment info via Apple Pay/CashApp/Zelle.
+          <strong>Orders are not final until payment is received.</strong>
+        </div>
+
+        <div class="checkbox-group">
+          <label><input type="checkbox" name="acknowledgement" value="I understand" required> I understand.</label>
+        </div>
+
+         <button class="submit-btn" type="submit" id="submitBtn">Submit Order Request</button>
+  <p id="formStatus" style="margin:14px 0 0; text-align:center; font-weight:700;"></p>
+      </form>
+    </div>
+  </main>
+
+<!-- ================= CHEF VIEW ================= -->
+<main id="chefPage" class="page">
+  <div class="section" style="max-width:900px;">
+
+    <a class="backlink" href="#home">← Back to Home</a>
+
+    <div class="chef-layout">
+      <img 
+        src="./images/chef.jpg" 
+        alt="Chef Paris" 
+        class="chef-photo"
+      />
+
+      <div class="chef-bio">
+       <h1 class="chef-name">Meet Chef Paris</h1>
+
+        <p>
+          Paris is the heart and hands behind <strong>Paris’s Sweet Spot</strong>.
+          She started the business last year with a passion for baking and a
+          genuine love for bringing people joy through sweets made with care.
+        </p>
+
+        <p>
+          Since launching, Paris has been blessed with incredible support and
+          has had the opportunity to bake for birthday parties, special events,
+          personal orders, and more.
+        </p>
+
+        <p>
+          What she enjoys most is creating moments of comfort and happiness —
+          turning simple ingredients into treats that make people smile.
+          Baking isn’t just what she does — it’s her gift.
+        </p>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- ================= MENU VIEW ================= -->
+<main id="menuPage" class="page">
+  <div class="section" style="max-width:1000px;">
+    <a class="backlink" href="#home">← Back to Home</a>
+
+    <h1 class="menu-title">The Sweet Menu</h1>
+    <p class="menu-intro">
+      Pick your favorites, mix & match flavors, and let’s make your day a little sweeter.
+      Perfect for parties, events, and “just because” moments.
+    </p>
+
+    <!-- Cookies -->
+    <div class="menu-section">
+      <h2>🍪 Cookies</h2>
+      <div class="menu-grid">
+        <div class="menu-item">
+          <h3>Red Velvet Oreo</h3>
+          <p>Rich red velvet + Oreo goodness.</p>
+          <span class="menu-price">Half Dozen / Dozen</span>
+        </div>
+
+        <div class="menu-item">
+          <h3>Cookie Monster</h3>
+          <p>Loaded, fun, and a customer favorite.</p>
+          <span class="menu-price">Half Dozen / Dozen</span>
+        </div>
+
+        <div class="menu-item">
+          <h3>Key Lime</h3>
+          <p>Sweet + tangy with a smooth finish.</p>
+          <span class="menu-price">Half Dozen / Dozen</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cupcakes -->
+    <div class="menu-section">
+      <h2>🧁 Cupcakes</h2>
+      <div class="menu-grid">
+        <div class="menu-item">
+          <h3>Classic Vanilla</h3>
+          <p>Soft, light, and always a win.</p>
+          <span class="menu-price">Half Dozen / Dozen</span>
+        </div>
+
+        <div class="menu-item">
+          <h3>Strawberry</h3>
+          <p>Sweet strawberry flavor that pops.</p>
+          <span class="menu-price">Half Dozen / Dozen</span>
+        </div>
+
+        <div class="menu-item">
+          <h3>Biscoff Cookie Butter</h3>
+          <p>Warm spice + cookie butter magic.</p>
+          <span class="menu-price">Half Dozen / Dozen</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mini Bundts -->
+    <div class="menu-section">
+      <h2>🍰 Mini Bundt Cakes</h2>
+      <div class="menu-grid">
+        <div class="menu-item">
+          <h3>Mini Bundt Cakes</h3>
+          <p>Perfect for gifting, parties, and cravings.</p>
+          <span class="menu-price">Half Dozen / Dozen</span>
+        </div>
+
+        <div class="menu-item">
+          <h3>Biscoff Mini Bundts</h3>
+          <p>Cookie butter flavor baked into every bite.</p>
+          <span class="menu-price">Half Dozen / Dozen</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div style="text-align:center; margin-top:40px;">
+      <a class="cta" href="#order" style="display:inline-block;">Place Your Order</a>
+    </div>
+  </div>
+</main>
+
+
+
+  <script>
+    // Mobile menu toggle
+    const btn = document.getElementById('menuBtn');
+    const nav = document.getElementById('mobileNav');
+    btn?.addEventListener('click', () => {
+      const isOpen = nav.style.display === 'block';
+      nav.style.display = isOpen ? 'none' : 'block';
+      btn.setAttribute('aria-expanded', String(!isOpen));
+    });
+
+    // Footer year
+ const yearEl = document.getElementById('year');
+if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+    // Page routing (one-file “two pages”)
+    const homePage = document.getElementById('homePage');
+    const orderPage = document.getElementById('orderPage');
+    const chefPage  = document.getElementById('chefPage'); 
+    const menuPage = document.getElementById('menuPage');
+
+function showViewFromHash() {
+  const hash = (window.location.hash || '#home').split('?')[0];
+
+  const isOrder = hash.startsWith('#order');
+  const isChef = hash.startsWith('#chef');
+  const isMenu = hash.startsWith('#menu');
+
+  // Hide all pages first
+  homePage.classList.remove('active');
+  orderPage.classList.remove('active');
+  chefPage?.classList.remove('active');
+  menuPage?.classList.remove('active');
+
+  if (isOrder) {
+    orderPage.classList.add('active');
+    window.scrollTo(0,0);
+  } else if (isChef) {
+    chefPage?.classList.add('active');
+    window.scrollTo(0,0);
+  } else if (isMenu) {
+    menuPage?.classList.add('active');
+    window.scrollTo(0,0);
+  } else {
+    homePage.classList.add('active');
+  }
+
+  // Close mobile nav if open
+  nav && (nav.style.display = 'none');
+  btn && btn.setAttribute('aria-expanded','false');
+}
+
+
+
+    window.addEventListener('hashchange', showViewFromHash);
+    showViewFromHash();
+// Force the CTA button to switch to Order view
+document.getElementById("orderCta")?.addEventListener("click", (e) => {
+  e.preventDefault();
+  window.location.hash = "#order";
+});
+
+    // Make nav links always return to Home view then scroll to the right section
+   function goHomeThenScroll(selector) {
+  window.location.hash = '#home';
+
+  setTimeout(() => {
+    showViewFromHash(); // make sure Home page is visible first
+
+    setTimeout(() => {
+      const el = document.querySelector(selector);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 50);
+
+  }, 50);
+}
+
+
+    document.querySelectorAll('[data-home="true"]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = link.getAttribute('data-scroll') || '#homeTop';
+        goHomeThenScroll(target);
+        nav && (nav.style.display = 'none');
+        btn && btn.setAttribute('aria-expanded','false');
+      });
+    });
+
+    document.querySelectorAll('[data-order="true"]').forEach(link => {
+      link.addEventListener('click', () => {
+        nav && (nav.style.display = 'none');
+        btn && btn.setAttribute('aria-expanded','false');
+      });
+    });
+
+document.querySelectorAll('[data-chef="true"]').forEach(link => {
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    window.location.hash = "#chef";
+    nav && (nav.style.display = 'none');
+    btn && btn.setAttribute('aria-expanded','false');
+  });
+});
+
+document.querySelectorAll('[data-menu="true"]').forEach(link => {
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    window.location.hash = "#menu";
+    nav && (nav.style.display = 'none');
+    btn && btn.setAttribute('aria-expanded','false');
+  });
+});
+
+
+  // ...your existing JS above...
+
+// ================= ORDER FORM -> GOOGLE SHEETS =================
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzJtrxzSamxMmlo4YUl0iO7jMVONU3tPU7_aLehUiSE_Thj0cuuXpg2Z2Nn-s28xPyg/exec";
+
+const orderFormEl = document.getElementById("orderForm");
+const formStatusEl = document.getElementById("formStatus");
+const submitBtnEl = document.getElementById("submitBtn");
+
+if (orderFormEl) {
+  orderFormEl.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+  if (formStatusEl) formStatusEl.textContent = "Submitting...";
+if (submitBtnEl) submitBtnEl.disabled = true;
+
+    const formData = new FormData(orderFormEl);
+
+    try {
+      await fetch(SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        body: formData
+      });
+
+      formStatusEl.textContent = "✅ Order submitted! We'll follow up soon.";
+      orderFormEl.reset();
+    } catch (err) {
+      console.error(err);
+      formStatusEl.textContent = "❌ Could not submit. Please try again.";
+    } finally {
+     if (submitBtnEl) submitBtnEl.disabled = false;
+    }
+  });
+}
+
+// ================= SLIDESHOW =================
+(() => {
+  const slidesWrap = document.getElementById("slides");
+  if (!slidesWrap) return;
+
+  const slides = Array.from(slidesWrap.querySelectorAll(".slide"));
+  console.log("SLIDES FOUND:", slides.length);
+  const dotsWrap = document.getElementById("dots");
+  const captionEl = document.getElementById("slideCaption");
+
+  const captions = [
+    "Paris baking in the kitchen",
+    "Biscoff cupcakes",
+    "Vanilla cupcakes",
+    "Strawberry cupcakes",
+    "Cookie Monster cookies",
+    "Biscoff bundt cake",
+    "Red velvet cookies"
+  ];
+
+  let index = 0;
+  let timer = null;
+
+  const prevBtn = document.querySelector(".slider-btn.prev");
+  const nextBtn = document.querySelector(".slider-btn.next");
+
+  function renderDots() {
+    if (!dotsWrap) return;
+    dotsWrap.innerHTML = "";
+    slides.forEach((_, i) => {
+      const d = document.createElement("button");
+      d.type = "button";
+      d.className = "dot" + (i === index ? " active" : "");
+      d.addEventListener("click", () => goTo(i));
+      dotsWrap.appendChild(d);
+    });
+  }
+
+  function show(i) {
+
+console.log("SHOWING SLIDE:", i);
+
+    slides.forEach((s, idx) => s.classList.toggle("active", idx === i));
+    if (captionEl) captionEl.textContent = captions[i] || "";
+    renderDots();
+  }
+
+  function goTo(i) {
+    index = (i + slides.length) % slides.length;
+    show(index);
+    restart();
+  }
+
+  function next() {
+  console.log("NEXT TICK -> going to", index + 1);
+  goTo(index + 1);
+}
+  function prev() { goTo(index - 1); }
+
+  function restart() {
+    if (timer) clearInterval(timer);
+    timer = setInterval(next, 4500);
+  }
+
+  nextBtn?.addEventListener("click", next);
+  prevBtn?.addEventListener("click", prev);
+
+  // pause only on hover
+let hoverEnabled = false;
+
+window.addEventListener("mousemove", () => {
+  hoverEnabled = true;
+}, { once: true });
+
+slidesWrap.addEventListener("mouseenter", () => {
+  if (!hoverEnabled) return;       // prevents instant pause on load
+  if (timer) clearInterval(timer);
+});
+
+slidesWrap.addEventListener("mouseleave", () => {
+  restart();
+});
+
+
+  show(index);
+  restart();
+})();
+
+
+</script>
+</body>
+</html>
