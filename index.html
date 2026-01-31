@@ -197,7 +197,9 @@
   inset:0;
   width:100%;
   height:100%;
-  object-fit:cover;      /* use cover instead of contain */
+  object-fit:contain;      /* ✅ shows FULL image */
+  object-position:center;  /* ✅ keeps it centered */
+  background:#000;         /* ✅ fills empty space nicely */
   display:none;
 }
 
@@ -608,7 +610,7 @@
   <div class="card slider" aria-label="Featured photos slideshow">
     
 <div class="slides" id="slides">
-  <img class="slide" src="chef.jpg" alt="Chef Paris">
+  <img class="slide active" src="chef.jpg" alt="Chef Paris">
   <img class="slide" src="biscoff-cupcakes.jpg" alt="Biscoff cupcakes">
   <img class="slide" src="vanilla-cupcakes.jpg" alt="Vanilla cupcakes">
   <img class="slide" src="strawberry-cupcakes.jpg" alt="Strawberry cupcakes">
@@ -622,7 +624,7 @@
 
     <div class="dots" id="dots" aria-label="Slideshow navigation"></div>
 
-    <div class="caption" id="slideCaption">Biscoff Cookie Butter cupcakes (available as mini Bundts)</div>
+    <div class="caption" id="slideCaption">Paris baking in the kitchen</div>
   </div>
 </section>
 
