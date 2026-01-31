@@ -180,8 +180,8 @@
 .card.slider{
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 9;   /* consistent slideshow shape */
-  background: #000;
+  aspect-ratio: 16 / 9;
+  background: var(--berry); /* 👈 brand pink background */
   overflow: hidden;
 }
 
@@ -197,8 +197,9 @@
   inset:0;
   width:100%;
   height:100%;
-  object-fit:cover;           /* full-bleed */
-  object-position:50% 18%;    /* 👈 keeps faces + tops visible */
+  object-fit:cover;
+  object-position:50% 18%;
+  background: var(--berry); /* 👈 prevents black edges */
   display:none;
 }
 .slide.active{
