@@ -180,8 +180,10 @@
 .card.slider{
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 9;
-  background: var(--berry); /* 👈 brand pink background */
+  height: min(70vh, 560px);   /* stable height */
+  background: var(--berry);  /* ✅ pink brand fill */
+  border: 3px solid #1f7aff; /* ✅ blue border locked in */
+  border-radius: 8px;
   overflow: hidden;
 }
 
@@ -191,23 +193,20 @@
   height: 100%;
 }
 
-/* IMPORTANT: keep these so images have size + can stack */
 .slide{
   position:absolute;
   inset:0;
   width:100%;
   height:100%;
-  object-fit:cover;
-  object-position:50% 18%;
-  background: var(--berry); /* 👈 prevents black edges */
+  object-fit: contain;       /* ✅ NO CROPPING */
+  object-position: center;   /* centered image */
+  background: var(--berry);  /* ✅ pink letterbox space */
   display:none;
 }
+
 .slide.active{
   display:block;
 }
-
-
-
 
 .slider-btn{
   position:absolute;
